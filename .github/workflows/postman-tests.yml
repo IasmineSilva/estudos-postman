@@ -1,0 +1,24 @@
+name: Postman Tests
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  run-postman-tests:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Install Newman
+      run: npm install -g newman
+    
+    - name: Run Postman Collection
+      env:
+        POSTMAN_API_KEY: ${{ secrets.POSTMAN_API_KEY }}
+      run: |
+        postman login --with-api-key ${{ secrets.POSTMAN_API_KEY }}
+        postman collection run 28189406-c7e78215-2184-4f85-a4ce-dafe1db56e1b -e 28189406-f2ba5346-2b0f-4355-bd34-9e4653488eaf 
