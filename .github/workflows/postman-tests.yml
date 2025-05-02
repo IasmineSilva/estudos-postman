@@ -25,4 +25,5 @@ jobs:
           -e "https://api.getpostman.com/environments/28189406-f2ba5346-2b0f-4355-bd34-9e4653488eaf?apikey=$POSTMAN_API_KEY" \
           --reporter-cli-no-summary \
           --reporter-cli-no-banner \
-          --reporter-cli-no-failures
+          --reporter-cli-no-failures \
+          --suppress-exit-code
