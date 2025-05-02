@@ -24,10 +24,20 @@ jobs:
         mkdir -p reports
         newman run "https://api.getpostman.com/collections/28189406-c7e78215-2184-4f85-a4ce-dafe1db56e1b?apikey=$POSTMAN_API_KEY" \
           -e "https://api.getpostman.com/environments/28189406-f2ba5346-2b0f-4355-bd34-9e4653488eaf?apikey=$POSTMAN_API_KEY" \
+          --reporters html,htmlextra,json \
           --reporter-html-export reports/report.html \
           --reporter-htmlextra-export reports/report-extra.html \
           --reporter-json-export reports/report.json \
           --suppress-exit-code
+    
+    - name: Verify reports
+      run: |
+        echo "Conteúdo do diretório reports:"
+        ls -la reports/
+        echo "Verificando arquivos:"
+        [ -f reports/report.html ] && echo "report.html existe" || echo "report.html não existe"
+        [ -f reports/report-extra.html ] && echo "report-extra.html existe" || echo "report-extra.html não existe"
+        [ -f reports/report.json ] && echo "report.json existe" || echo "report.json não existe"
     
     - name: Upload reports
       uses: actions/upload-artifact@v4
