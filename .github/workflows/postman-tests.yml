@@ -19,20 +19,25 @@ jobs:
       run: npm install -g newman newman-reporter-html newman-reporter-htmlextra
     
     - name: Create reports directory
-      run: mkdir -p reports
+      run: |
+        mkdir -p $GITHUB_WORKSPACE/reports
+        ls -la $GITHUB_WORKSPACE/reports
     
     - name: Run Postman Collection
       continue-on-error: true
       run: |
         newman run "https://api.getpostman.com/collections/28189406-c7e78215-2184-4f85-a4ce-dafe1db56e1b?apikey=$POSTMAN_API_KEY" \
           -e "https://api.getpostman.com/environments/28189406-f2ba5346-2b0f-4355-bd34-9e4653488eaf?apikey=$POSTMAN_API_KEY" \
-          --reporter-html-export reports/report.html \
-          --reporter-htmlextra-export reports/report-extra.html \
-          --reporter-json-export reports/report.json \
+          --reporter-html-export $GITHUB_WORKSPACE/reports/report.html \
+          --reporter-htmlextra-export $GITHUB_WORKSPACE/reports/report-extra.html \
+          --reporter-json-export $GITHUB_WORKSPACE/reports/report.json \
           --suppress-exit-code
+    
+    - name: List reports directory
+      run: ls -la $GITHUB_WORKSPACE/reports
     
     - name: Upload reports
       uses: actions/upload-artifact@v4
       with:
         name: postman-reports
-        path: reports/
+        path: $GITHUB_WORKSPACE/reports/
